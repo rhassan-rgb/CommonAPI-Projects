@@ -1,7 +1,12 @@
-# SomeIP through CommmonAPI
-Using Common API unifies the interface used by the application regaless the middleware protocol.
+# SomeIP through CommonAPI
+
+Using Common API unifies the interface used by the application regardless the middleware protocol.
 
 For more details Please refer to [CommonAPI Official Repo](https://github.com/COVESA/capicxx-core-runtime) and [CommonAPI C++ Documentation](https://covesa.github.io/capicxx-core-tools/)
+
+**Disclaimer**: This is just a more organized and simplified environment to practice development using CommonAPI. The original complete flow can be found in [COVESA CommonAPI 10-minute tutorials](https://github.com/COVESA/capicxx-core-tools/wiki). I've set-up this environment for personal use. So, it's not guaranteed to meet your needs but it's open source so feel free to modify according to your needs.
+
+**Note**: The HelloWorld project is supposed work out-of-the-box if the all the dependencies are present and should be considered as a golden example. It's recommended to do a dry-run on HelloWorld first to make sure the environment is setup correctly and get a grasp of how the environment is organized.
 
 ## Dependencies
 - Packages: 
@@ -116,11 +121,7 @@ Code Generators:
 
 # Let's get our hands dirty
 
-**Disclaimer**: This is just a more organized environment to practice development using CommonAPI. The original flow can be found in COVESA CommonAPI tutorials [here](https://github.com/COVESA/capicxx-core-tools/wiki). I set-up this environment for personal use. So, it might not work very-well with you but it's open source so feel free to modify according to your needs.
-
 **IT'S HIGHLY RECOMMENDED THAT YOU'RE FAMILIAR WITH THE WORKFLOW OF COMMONAPI DEVELOPMENT OR AT LEAST SOME/IP AND TRIED THE TUTORIALS FROM COVESA [HERE](https://github.com/COVESA/capicxx-core-tools/wiki)**
-
-The HelloWorld project is supposed work out-of-the-box if the all the dependencies are present and should be considered as a golden example. It's recommended to do a dry-run on HelloWorld first to make sure the environment is setup correctly 
 
 ## 1. Define your interface
 First, let's have a simple interface with only one method `SayHello` that takes a string argument `name` and returns a string value `message`. 
