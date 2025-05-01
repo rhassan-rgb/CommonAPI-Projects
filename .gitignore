@@ -1,0 +1,4 @@
+**/build/*
+cgen/*
+**/mylog.log
+install_folder/**
