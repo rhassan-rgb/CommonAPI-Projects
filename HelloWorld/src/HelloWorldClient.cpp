@@ -29,7 +29,7 @@ int main() {
 
     std::string domain = "local";
     std::string instance = "commonapi.examples.HelloWorld";
-    std::string conneection = "client-ample";
+    std::string conneection = "client-sample";
 
     std::shared_ptr<HelloWorldProxy<>> myProxy = runtime->buildProxy<HelloWorldProxy>(domain, instance, conneection);
 
