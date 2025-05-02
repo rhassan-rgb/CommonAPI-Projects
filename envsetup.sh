@@ -147,7 +147,7 @@ function _cloneDep() {
     echo "============================================================="
 
     _checkPath ${DEPENDENCIES_DIR}
-    checkRelPath ${REPO_NAME} n
+    _checkRelPath ${REPO_NAME} n
     if [[ $? -eq 1 ]]; then
         git clone https://github.com/COVESA/${REPO_NAME}.git ${REPO_NAME}
         cd ${REPO_NAME}
