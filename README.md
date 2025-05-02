@@ -13,7 +13,7 @@ For more details Please refer to [CommonAPI Official Repo](https://github.com/CO
     - system tools
         ```
         $ sudo apt-get update
-        $ sudo apt-get install -y git wget unzip
+        $ sudo apt-get install -y git wget unzip openjdk-8-jre
         ```
     - Java 8 and other tools. please refer to [this](https://github.com/COVESA/capicxx-dbus-tools/wiki/CommonAPI-C---D-Bus-in-10-minutes#step-1-preparation--prerequisites)
     - Boost Library
