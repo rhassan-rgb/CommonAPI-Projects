@@ -222,12 +222,12 @@ function _buildCapi-someip() {
 
 # build all dependencies
 function buildDeps() {
+    echo "Building ${VSOMEIP_REPO_NAME}..."
+    buildVsomeip
     echo "Building ${CAPI_CORE_REPO_NAME}..."
     buildCapi-core
     echo "Building ${CAPI_VSOMEIP_REPO_NAME}..."
     buildCapi-someip
-    echo "Building ${VSOMEIP_REPO_NAME}..."
-    buildVsomeip
 }
 
 ######################## Generation Tools Handling ############################ 
