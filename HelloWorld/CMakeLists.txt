@@ -13,7 +13,6 @@ set(PROJECT_NAME "HelloWorld")
 project(${PROJECT_NAME} CXX)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -Wl,--no-as-needed")
 
-# include(FindPkgConfig)
 find_package(CommonAPI 3.2.0 REQUIRED CONFIG NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
 find_package(CommonAPI-SomeIP 3.2.0 REQUIRED)
 find_package(vsomeip3 3.4.0 REQUIRED)
