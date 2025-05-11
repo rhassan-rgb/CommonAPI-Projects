@@ -1,0 +1,42 @@
+
+import "platform:/plugin/org.genivi.commonapi.someip/deployment/CommonAPI-4-SOMEIP_deployment_spec.fdepl"
+import "helloEverything.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface rgb.examples.HelloEverything {
+    SomeIpServiceID = 4660
+
+    attribute MyTestAttribute {
+        SomeIpGetterID = 2561
+        SomeIpSetterID = 2562
+        SomeIpNotifierID = 2563
+        SomeIpNotifierEventGroups = { 2563 }
+
+        SomeIpAttributeReliable = true
+    }
+
+    attribute MyCustomTestAttribute {
+        SomeIpGetterID = 3817
+        SomeIpSetterID = 2818
+        SomeIpNotifierID = 2819
+        SomeIpNotifierEventGroups = { 2819 }
+
+        SomeIpAttributeReliable = true
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for typeCollection rgb.examples.MyTypes {
+    struct MyStruct {
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance rgb.examples.HelloEverything {
+        InstanceId = "rgb.examples.HelloEverythingInstance"
+
+        SomeIpInstanceID = 22136
+
+        SomeIpUnicastAddress = "192.168.7.2"
+        SomeIpReliableUnicastPort = 30499
+        SomeIpUnreliableUnicastPort = 30500
+    }
+}
