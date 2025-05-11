@@ -1,0 +1,8 @@
+{
+    "rgb.examples.HelloEverything" : {
+        "service_id": 4660,
+        "instances" : {
+            "rgb.examples.HelloEverythingInstance": 22136
+        }
+    }
+}
