@@ -2,3 +2,5 @@
 cgen/*
 **/mylog.log
 install_folder/**
+deps/capi**
+deps/vsomeip**
