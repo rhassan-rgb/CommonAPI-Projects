@@ -35,17 +35,6 @@ link_directories(
     ${COMMONAPI_SOMEIP_CMAKE_DIR}/build
 )
 
-# FILE(GLOB_RECURSE HELLOWORLD_DBUS_COMMON_LIB_SRCS src-gen/dbus/common/*.cpp)
-# add_library(helloworlddbuscommon SHARED ${HELLOWORLD_DBUS_COMMON_LIB_SRCS})
-# target_link_libraries(helloworlddbuscommon CommonAPI-DBus dbus-1)
-
-# FILE(GLOB_RECURSE HELLOWORLD_DBUS_PROXY_LIB_SRCS src-gen/dbus/proxy/*.cpp)
-# add_library(helloworlddbusproxy SHARED ${HELLOWORLD_DBUS_PROXY_LIB_SRCS})
-# target_link_libraries(helloworlddbusproxy CommonAPI-DBus dbus-1)
-
-# FILE(GLOB_RECURSE HELLOWORLD_DBUS_STUB_LIB_SRCS src-gen/dbus/stub/*.cpp)
-# add_library(helloworlddbusstub SHARED ${HELLOWORLD_DBUS_STUB_LIB_SRCS})
-# target_link_libraries(helloworlddbusstub CommonAPI-DBus dbus-1)
 set(SOMEIP_COMMON_LIB ${PROJECT_NAME}someipcommon)
 FILE(GLOB_RECURSE HELLOWORLD_SOMEIP_COMMON_LIB_SRCS src-gen/someip/common/*.cpp)
 add_library(${SOMEIP_COMMON_LIB} SHARED ${HELLOWORLD_SOMEIP_COMMON_LIB_SRCS})
