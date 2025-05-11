@@ -1,0 +1,18 @@
+package rgb.examples
+
+interface HelloEverything {
+	version { major 1 minor 0 }
+
+	attribute Int32 MyTestAttribute
+	attribute MyTypes.MyStruct MyCustomTestAttribute
+}
+
+typeCollection MyTypes {
+	version { major 1 minor 0 }
+	
+	struct MyStruct {
+		Int32 myInt32
+		Boolean myBoolean
+		Double myDouble
+	}
+}
