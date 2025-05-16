@@ -33,7 +33,7 @@ std::shared_ptr<CommonAPI::SomeIP::Proxy> createHelloEverythingSomeIPProxy(
 
 void initializeHelloEverythingSomeIPProxy() {
     CommonAPI::SomeIP::AddressTranslator::get()->insert(
-        "local:rgb.examples.HelloEverything:v1_0:rgb.examples.HelloEverythingInstance",
+        "local:rgb.examples.HelloEverything:v1_0:rgb.examples.HelloEverythingInstance0",
         0x1234, 0x5678, 1, 0);
     CommonAPI::SomeIP::Factory::get()->registerProxyCreateMethod(
         "rgb.examples.HelloEverything:v1_0",

@@ -16,10 +16,10 @@ namespace v1 {
 namespace rgb {
 namespace examples {
 
-const char * const HelloEverything_rgb_examples_HelloEverythingInstance = "rgb.examples.HelloEverythingInstance";
+const char * const HelloEverything_rgb_examples_HelloEverythingInstance0 = "rgb.examples.HelloEverythingInstance0";
 
 const std::string HelloEverything_INSTANCES[] = {
-    HelloEverything_rgb_examples_HelloEverythingInstance
+    HelloEverything_rgb_examples_HelloEverythingInstance0
 };
 
 } // namespace examples
