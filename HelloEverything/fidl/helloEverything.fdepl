@@ -31,7 +31,7 @@ define org.genivi.commonapi.someip.deployment for typeCollection rgb.examples.My
 
 define org.genivi.commonapi.someip.deployment for provider as Service {
     instance rgb.examples.HelloEverything {
-        InstanceId = "rgb.examples.HelloEverythingInstance"
+        InstanceId = "rgb.examples.HelloEverythingInstance0"
 
         SomeIpInstanceID = 22136
 
