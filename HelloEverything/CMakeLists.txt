@@ -46,3 +46,11 @@ FILE(GLOB_RECURSE STUB_LIB_SRCS src-gen/someip/stub/*.cpp)
 add_library(${STUB_LIB} SHARED ${STUB_LIB_SRCS})
 target_link_libraries(${STUB_LIB} CommonAPI-SomeIP)
 
+
+set(CLIENT_EXE ${PROJECT_NAME}Client)
+add_executable(${CLIENT_EXE} src/HelloEverythingClient.cpp)
+target_link_libraries(${CLIENT_EXE} CommonAPI ${PROXY_LIB} ${COMMON_LIB} CommonAPI-SomeIP vsomeip3)
+
+set(SERVICE_EXE ${PROJECT_NAME}Service)
+add_executable(${SERVICE_EXE} src/HelloEverythingService.cpp src/HelloEverythingStubImpl.cpp)
+target_link_libraries(${SERVICE_EXE} CommonAPI ${STUB_LIB} ${COMMON_LIB} CommonAPI-SomeIP vsomeip3)
