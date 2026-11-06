@@ -1,0 +1,57 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// 
+// Copyright (C) 2025 Ragab R. Hassan (r.elkattawy@gmail.com)
+// 
+// The source of this file can be found here:
+// https://github.com/COVESA/capicxx-core-tools/wiki/Loading-Bindings-And-Libraries 
+
+package commonapi.media
+
+typeCollection MediaTypes {
+    version { major 1 minor 0 }
+    
+    struct MediaInfo {
+        String title
+        String album
+        String artist
+        UInt8 currentVolume
+        Boolean isPlaying
+    }
+    enumeration OperationTypes {
+        PLAY
+        PAUSE
+        NEXT
+        PREVIOUS
+        VOLUME_UP
+        VOLUME_DOWN
+    }
+    array MacType of UInt8
+}
+
+interface RemoteMedia {
+    version { major 1 minor 0 }
+
+    // Observable attribute for the Server to broadcast to the Client
+    attribute MediaTypes.MediaInfo currentMediaInfo readonly
+
+    // Secured RPC Commands
+    method doOperation {
+        in {
+            MediaTypes.OperationTypes op
+            UInt64 freshnessValue
+            MediaTypes.MacType mac
+        }
+        out { Boolean success }
+    }
+
+    method setVolume {
+        in {
+            UInt8 volumeLevel
+            UInt64 freshnessValue
+            MediaTypes.MacType mac
+        }
+        out { Boolean success }
+    }
+}

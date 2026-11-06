@@ -4,3 +4,4 @@ cgen/*
 install_folder/**
 deps/capi**
 deps/vsomeip**
+**/src-gen/*

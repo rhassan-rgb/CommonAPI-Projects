@@ -1,0 +1,45 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// 
+// Copyright (C) 2025 Ragab R. Hassan (r.elkattawy@gmail.com)
+// 
+// The source of this file can be found here:
+// https://github.com/COVESA/capicxx-core-tools/wiki/Loading-Bindings-And-Libraries 
+
+import "platform:/plugin/org.genivi.commonapi.someip/deployment/CommonAPI-4-SOMEIP_deployment_spec.fdepl"
+import "RemoteMedia.fidl"
+
+define org.genivi.commonapi.someip.deployment for typeCollection commonapi.media.MediaTypes {
+    enumeration OperationTypes {
+        SomeIpEnumWidth = 1
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for interface commonapi.media.RemoteMedia {
+    SomeIpServiceID = 4864 // 0x1300
+    
+    attribute currentMediaInfo {
+        SomeIpGetterID = 3000
+        SomeIpNotifierID = 33000
+        SomeIpNotifierEventGroups = {3300}
+    }
+
+    method doOperation {
+        SomeIpMethodID = 1
+        SomeIpReliable = true
+    }
+
+    method setVolume {
+        SomeIpMethodID = 2
+        SomeIpReliable = true
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance commonapi.media.RemoteMedia {
+        InstanceId = "commonapi.media.RemoteMedia"
+
+        SomeIpInstanceID = 4660 //0x1234
+    }
+}

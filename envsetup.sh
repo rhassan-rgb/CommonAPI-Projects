@@ -127,7 +127,7 @@ CAPI_VSOMEIP_REPO_NAME="capicxx-someip-runtime"
 CAPI_VSOMEIP_VER="3.2.4"
 
 VSOMEIP_REPO_NAME="vsomeip"
-VSOMEIP_VER="3.5.5"
+VSOMEIP_VER="3.7.5"
 
 # used by the user to clone dependencies
 function cloneDeps() {
