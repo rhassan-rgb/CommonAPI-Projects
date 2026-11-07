@@ -6,7 +6,7 @@ namespace mediaRemote {
 namespace service {
 
 bool MediaControlService::registerService() {
-    return _runtime && _service && _runtime->registerService(_domain, _instance, _service);
+    return _runtime && _service && _runtime->registerService(_domain, _instance, _service, "MediaControlService");
 }
 bool MediaControlService::init() {
     _runtime = CommonAPI::Runtime::get();

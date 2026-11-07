@@ -26,6 +26,7 @@ typeCollection MediaTypes {
         PREVIOUS
         VOLUME_UP
         VOLUME_DOWN
+        INVALID
     }
     array MacType of UInt8
 }

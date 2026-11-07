@@ -7,4 +7,4 @@ target_sources(common PRIVATE
 
 target_include_directories(common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(common PUBLIC OpenSSL::Crypto)
+target_link_libraries(common PUBLIC OpenSSL::Crypto PkgConfig::DLT)

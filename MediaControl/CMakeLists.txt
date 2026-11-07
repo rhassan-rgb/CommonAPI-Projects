@@ -8,6 +8,8 @@ find_package(OpenSSL REQUIRED)
 find_package(CommonAPI 3.2.0 REQUIRED CONFIG)
 find_package(CommonAPI-SomeIP 3.2.0 REQUIRED)
 find_package(vsomeip3 3.7.0 REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(DLT REQUIRED IMPORTED_TARGET automotive-dlt)
 
 include(FetchContent)
 FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip)

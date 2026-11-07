@@ -1,0 +1,57 @@
+{
+    "unicast": "127.0.0.1",
+    "logging": {
+        "level": "info",
+        "console": "false",
+        "dlt": "true"
+    },
+    "applications": [
+        {
+            "name": "MediaControlService",
+            "id": "0x1301"
+        },
+        {
+            "name": "MediaControlClient",
+            "id": "0x1302"
+        }
+    ],
+    "services": [
+        {
+            "service": "0x1300",
+            "instance": "0x1234",
+            "reliable": {
+                "port": "30509",
+                "enable-magic-cookies": "false"
+            },
+            "events": [
+                {
+                    "event": "0x80e8",
+                    "is_field": "true",
+                    "is_reliable": "true"
+                }
+            ],
+            "eventgroups": [
+                {
+                    "eventgroup": "0x0ce4",
+                    "events": [
+                        "0x80e8"
+                    ]
+                }
+            ]
+        }
+    ],
+    "routing": "MediaControlService",
+    "service-discovery": {
+        "enable": "true",
+        "multicast": "224.224.224.245",
+        "port": "30490",
+        "protocol": "udp",
+        "initial_delay_min": "10",
+        "initial_delay_max": "100",
+        "repetitions_base_delay": "200",
+        "repetitions_max": "3",
+        "ttl": "3",
+        "cyclic_offer_delay": "2000",
+        "request_response_delay": "1500"
+    }
+}
