@@ -20,6 +20,7 @@ define org.genivi.commonapi.someip.deployment for interface commonapi.media.Remo
     SomeIpServiceID = 4864 // 0x1300
     
     attribute currentMediaInfo {
+        SomeIpAttributeReliable = true
         SomeIpGetterID = 3000
         SomeIpNotifierID = 33000
         SomeIpNotifierEventGroups = {3300}
