@@ -14,6 +14,12 @@ ROOT_WD=$(pwd)
 DEPENDENCIES_DIR=${ABS_ROOT_WD}/deps
 CURRENT_PROJECT=
 
+# Platform Detection
+IS_MACOS=0
+if [[ "$(uname)" == "Darwin" ]]; then
+    IS_MACOS=1
+fi
+
 
 # Build Configs
 ENABLE_SIGNAL_HANDLING=1
@@ -127,7 +133,15 @@ CAPI_VSOMEIP_REPO_NAME="capicxx-someip-runtime"
 CAPI_VSOMEIP_VER="3.2.4"
 
 VSOMEIP_REPO_NAME="vsomeip"
-VSOMEIP_VER="3.7.5"
+if [[ ${IS_MACOS} -eq 1 ]]; then
+    VSOMEIP_VER="3.7.3"
+    NUM_CORES=$(sysctl -n hw.ncpu 2>/dev/null || echo 4)
+    CMAKE_POLICY_FLAGS="-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+else
+    VSOMEIP_VER="3.5.5"
+    NUM_CORES=$(nproc 2>/dev/null || echo 4)
+    CMAKE_POLICY_FLAGS=""
+fi
 
 # used by the user to clone dependencies
 function cloneDeps() {
@@ -191,8 +205,13 @@ function _buildCapi-core() {
         echo "ERROR: ${CAPI_CORE_REPO_NAME} not found, please clone"
         return 1
     fi
-    cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} .
-    cmake --build build/ --target install -j$(nproc)
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        cmake -Bbuild ${CMAKE_POLICY_FLAGS} -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} .
+        cmake --build build/ --target install -j${NUM_CORES}
+    else
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} .
+        cmake --build build/ --target install -j$(nproc)
+    fi
 }
 
 function buildVsomeip() {
@@ -204,8 +223,13 @@ function _buildVsomeip() {
     cd ${DEPENDENCIES_DIR}
     _checkRelPath ${VSOMEIP_REPO_NAME}
 
-    cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DENABLE_SIGNAL_HANDLING=${ENABLE_SIGNAL_HANDLING} -DDIAGNOSIS_ADDRESS=0x10 .
-    cmake --build build/ --target install -j$(nproc)
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DENABLE_SIGNAL_HANDLING=${ENABLE_SIGNAL_HANDLING} -DDIAGNOSIS_ADDRESS=0x10 .
+        cmake --build build/ --target install -j${NUM_CORES}
+    else
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DENABLE_SIGNAL_HANDLING=${ENABLE_SIGNAL_HANDLING} -DDIAGNOSIS_ADDRESS=0x10 .
+        cmake --build build/ --target install -j$(nproc)
+    fi
 }
 
 
@@ -216,8 +240,13 @@ function buildCapi-someip() {
 function _buildCapi-someip() {
     cd ${DEPENDENCIES_DIR}
     _checkRelPath ${CAPI_VSOMEIP_REPO_NAME}
-    cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DCMAKE_PREFIX_PATH=${DEP_INSTALL_PATH} -DUSE_INSTALLED_COMMONAPI=${USE_INSTALLED_COMMONAPI} .
-    cmake --build build/ --target install -j$(nproc)
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        cmake -Bbuild ${CMAKE_POLICY_FLAGS} -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DCMAKE_PREFIX_PATH=${DEP_INSTALL_PATH} -DUSE_INSTALLED_COMMONAPI=${USE_INSTALLED_COMMONAPI} .
+        cmake --build build/ --target install -j${NUM_CORES}
+    else
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX=${DEP_INSTALL_PATH} -DCMAKE_PREFIX_PATH=${DEP_INSTALL_PATH} -DUSE_INSTALLED_COMMONAPI=${USE_INSTALLED_COMMONAPI} .
+        cmake --build build/ --target install -j$(nproc)
+    fi
 }
 
 # build all dependencies
@@ -231,7 +260,17 @@ function buildDeps() {
 }
 
 ######################## Generation Tools Handling ############################ 
-# Code generators
+# Java & Code generators
+JAVA_BIN="java"
+if [[ -x "/opt/homebrew/opt/openjdk@21/bin/java" ]]; then
+    JAVA_BIN="/opt/homebrew/opt/openjdk@21/bin/java"
+elif [[ -x "/opt/homebrew/bin/java" ]]; then
+    JAVA_BIN="/opt/homebrew/bin/java"
+fi
+
+CORE_LAUNCHER_JAR=$(ls ${ABS_ROOT_WD}/cgen/commonapi_core_generator/plugins/org.eclipse.equinox.launcher_*.jar 2>/dev/null | head -n 1)
+SOMEIP_LAUNCHER_JAR=$(ls ${ABS_ROOT_WD}/cgen/commonapi_someip_generator/plugins/org.eclipse.equinox.launcher_*.jar 2>/dev/null | head -n 1)
+
 export CORE_CGEN=${ABS_ROOT_WD}/cgen/commonapi_core_generator/commonapi-core-generator-linux-x86_64
 export SOMEIP_CGEN=${ABS_ROOT_WD}/cgen/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64
 CORE_GEN_VERSION="3.2.15"
@@ -265,13 +304,20 @@ function workOn() {
 }
 
 function _workOn() {
-    _checkPath $1 n
+    local TARGET_PROJ=$1
+    if [[ ${IS_MACOS} -eq 1 && ! -d "${ABS_ROOT_WD}/${TARGET_PROJ}" && "${TARGET_PROJ}" == "MediaRemote" && -d "${ABS_ROOT_WD}/MediaControl" ]]; then
+        TARGET_PROJ="MediaControl"
+    fi
+    _checkPath ${TARGET_PROJ} n
     if [[ $? -eq 1 ]]; then 
         echo "ERROR: Project $1 not found"
         return 1
     fi
-    PROJECT_NAME=$1
+    PROJECT_NAME=${TARGET_PROJ}
     CURRENT_PROJECT=$(realpath $(pwd))
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        echo "Working on project: ${PROJECT_NAME}"
+    fi
 }
 
 # 1: fidl file
@@ -284,8 +330,13 @@ function genCoreApiFiles() {
 
 function _genCoreApiFiles() {
     cd ${CURRENT_PROJECT}
-    $CORE_CGEN --skel --dest-common ./src-gen/core/common --dest-proxy ./src-gen/core/proxy --dest-stub ./src-gen/core/stub --dest-skel ./src-gen/core/skel -sp ./fidl
-    $SOMEIP_CGEN --dest-common ./src-gen/someip/common --dest-proxy ./src-gen/someip/proxy --dest-stub ./src-gen/someip/stub -sp ./fidl
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        ${JAVA_BIN} -jar "${CORE_LAUNCHER_JAR}" -data /tmp/cgen_data --skel --dest-common ./src-gen/core/common --dest-proxy ./src-gen/core/proxy --dest-stub ./src-gen/core/stub --dest-skel ./src-gen/core/skel -sp ./fidl "$@"
+        ${JAVA_BIN} -jar "${SOMEIP_LAUNCHER_JAR}" -data /tmp/cgen_data --dest-common ./src-gen/someip/common --dest-proxy ./src-gen/someip/proxy --dest-stub ./src-gen/someip/stub -sp ./fidl "$@"
+    else
+        $CORE_CGEN --skel --dest-common ./src-gen/core/common --dest-proxy ./src-gen/core/proxy --dest-stub ./src-gen/core/stub --dest-skel ./src-gen/core/skel -sp ./fidl
+        $SOMEIP_CGEN --dest-common ./src-gen/someip/common --dest-proxy ./src-gen/someip/proxy --dest-stub ./src-gen/someip/stub -sp ./fidl
+    fi
 }
 
 function buildProject() {
@@ -307,6 +358,9 @@ function _runApp() {
     cd ${CURRENT_PROJECT}
     pwd
     export LD_LIBRARY_PATH=${DEP_LIBRARY_PATH}:$PWD/build/ 
+    if [[ ${IS_MACOS} -eq 1 ]]; then
+        export DYLD_LIBRARY_PATH=${DEP_LIBRARY_PATH}:$PWD/build/
+    fi
     local TARGET=$1
     if [[ -n $2 ]]; then 
         export COMMONAPI_CONFIG=$2
@@ -314,5 +368,11 @@ function _runApp() {
         export COMMONAPI_CONFIG="commonapi4someip.ini"
     fi
     local APP_NAME="${PROJECT_NAME}${TARGET}"
+    if [[ -f "${CURRENT_PROJECT}/vsomeip.json" ]]; then
+        export VSOMEIP_CONFIGURATION="${CURRENT_PROJECT}/vsomeip.json"
+    elif [[ -f "${CURRENT_PROJECT}/${PROJECT_NAME}-local.json" ]]; then
+        export VSOMEIP_CONFIGURATION="${CURRENT_PROJECT}/${PROJECT_NAME}-local.json"
+    fi
+    export VSOMEIP_APPLICATION_NAME="${APP_NAME}"
     build/${APP_NAME}
 }
